@@ -1,0 +1,66 @@
+.admin-sidebar {
+    background: #133283;
+    color: white;
+    width: 100%;
+    height: 100vh;
+}
+
+.admin-sidebar-item {
+    background: #133283;
+    color: white;
+    width: 100%;
+    height: max-content;
+    font-size: 18px;
+    margin: 0;
+    padding: 8px 1.5rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition-duration: 0.5s;
+}
+
+.admin-sidebar-item:focus {
+    outline: none;
+    border: none;
+}
+
+.admin-sidebar-item:hover, .admin-sidebar-item:focus {
+    background: white;
+    color: #133283;
+}
+
+.admin-sidebar-button {
+    font-size: 2rem;
+    color: whitesmoke;
+    cursor: pointer;
+    height: max-content;
+    padding: 0;
+}
+
+.admin-sidebar-button:hover, .admin-sidebar-button:focus {
+    color: white;
+}
+
+.admin-container {
+    flex-wrap: wrap;
+}
+
+#admin_sidebar_content {
+    display: block;
+}
+
+.admin-outlet-container {
+    height: 100vh;
+    overflow-y: auto;
+}
+
+@media screen and (max-width: 767px) {
+    #admin_sidebar_content {
+        display: none;
+    }
+
+    .admin-sidebar {
+        height: max-content;
+        margin-bottom: 1rem;
+    }
+}

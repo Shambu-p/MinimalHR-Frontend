@@ -1,0 +1,74 @@
+.my-alert {
+    background: white;
+    width: 400px;
+    height: max-content;
+    z-index: 1020;
+    padding: 0;
+    position: fixed;
+}
+
+.top-left-alert {
+    left: 2rem;
+    top: 2rem;
+}
+
+.bottom-left-alert {
+    left: 2rem;
+    bottom: 2rem;
+}
+
+.top-right-alert {
+    right: 2rem;
+    top: 2rem;
+}
+
+.bottom-right-alert {
+    right: 2rem;
+    bottom: 2rem;
+}
+
+.alert-icon-container {
+    width: max-content;
+    padding: 1rem 2rem;
+    margin: 0;
+}
+
+.alert-icon-container i {
+    font-size: 3rem;
+    margin: auto;
+}
+
+.my-alert-success .text-container {
+    background: #137515;
+}
+
+.my-alert-success .alert-icon-container i {
+    color: #137515;
+}
+
+.my-alert-main .text-container {
+    background: #133283;
+}
+
+.my-alert-main .alert-icon-container i {
+    color: #133283;
+}
+
+.my-alert-danger .text-container {
+    background: #9c0b0d;
+}
+
+.my-alert-danger .alert-icon-container i {
+    color: #9c0b0d;
+}
+
+.text-container {
+    color: white;
+    width: 100%;
+    height: 7rem;
+    padding: 15px 20px;
+}
+
+
+
+

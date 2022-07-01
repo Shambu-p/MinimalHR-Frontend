@@ -1,0 +1,81 @@
+.my-select-input {
+    background: white;
+    border: none;
+    height: 35px;
+    width: 100%;
+    color: black;
+    margin: auto;
+}
+
+.my-select-container{
+    background: white;
+    width: 100%;
+    min-width: 300px;
+}
+.select-icon-container{
+    background: #133283;
+    padding: 7px 15px;
+    transition-duration: 0.5s;
+    color: white;
+}
+
+.selected-item-text {
+    background: white;
+    color: black;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+    width: 100%;
+    height: 100%;
+    padding-left: 15px;
+    position: relative;
+    margin-top: auto;
+    margin-bottom: auto;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    text-align: left;
+}
+
+.selected-item-text:focus {
+    outline: none;
+}
+
+.selected-item-text:focus {
+    color: #414141;
+}
+
+.select-icon-container i{
+    font-size: 30px;
+    margin: 0;
+}
+
+.my-select-list-container {
+    background: white;
+    color: black;
+    width: 100%;
+    padding: 10px 0;
+    margin-top: 50px;
+    position: absolute;
+    z-index: 1000;
+    float: left;
+    left: 0;
+    box-sizing: border-box;
+}
+
+.my-select-list-item {
+    width: 100%;
+    color: black;
+    font-family: sans-serif;
+    font-weight: normal;
+    font-size: 25px;
+    list-style: none;
+    padding: 5px 10px;
+    margin: 0;
+}
+
+.my-select-list-item:hover {
+    background: #133283;
+    color: white;
+    cursor: pointer;
+}

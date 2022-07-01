@@ -1,0 +1,172 @@
+
+var {
+    --form-control-color: rebeccapurple;
+}
+
+body {
+    background: #eeeeee;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+.my-button {
+    background: #133283;
+    height: max-content;
+    min-width: max-content;
+    border-bottom-left-radius: 2px;
+    border-top-left-radius: 2px;
+    border: none;
+    outline: none;
+    padding: 0 5px 0 0;
+    transition-duration: 0.5s;
+    cursor: pointer;
+}
+
+.my-button-main{
+    background: #133283;
+}
+
+.my-button-main:hover, .my-button-main:focus {
+    background: #1338a7;
+}
+
+.my-button-success{
+    background: #137515;
+}
+
+.my-button-success:hover, .my-button-success:focus {
+    background: #139715;
+}
+
+.my-button-danger{
+    background: #7d0a0c;
+}
+
+.my-button-danger:hover, .my-button-danger:focus {
+    background: #9c0b0d;
+}
+
+.my-button:hover .icon-container, .my-button:focus .icon-container{
+    background: white;
+}
+
+.my-button:focus {
+    outline: none;
+    border: none;
+}
+
+.my-button-text-container {
+    margin: auto;
+    color: white;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    word-wrap: normal;
+    word-break: keep-all;
+    line-break: strict;
+    font-family: sans-serif;
+    font-size: 20px;
+}
+.my-button .icon-container {
+    background: #e6e6e6;
+    padding: 5px 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+    transition-duration: 0.5s;
+    border-bottom-left-radius: 2px;
+    border-top-left-radius: 2px;
+}
+
+.icon-container i {
+    font-size: 25px;
+    margin: auto;
+}
+
+.my-input {
+    background: white;
+    border: none;
+    height: 35px;
+    color: black;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+    outline: none;
+    margin: auto;
+    padding: 0;
+    padding-right: 10px;
+    width: 85%;
+}
+
+.my-input-container{
+    background: white;
+    width: 100%;
+    min-width: 300px;
+}
+.input-icon-container{
+    background: #133283;
+    padding: 7px 15px;
+    font-size: 30px;
+    transition-duration: 0.5s;
+    color: white;
+}
+
+.input-icon-container i{
+    margin: 0;
+}
+
+.login-form-container {
+    width: 50%;
+    height: auto;
+}
+
+.login-form-icon {
+    font-size: 6rem;
+    color: #133283;
+}
+
+.vacancy-body {
+    background: #f8f8f8;
+}
+
+.vacancy-header {
+    background: #133283;
+    color: white;
+}
+
+.salary-text {
+    font-size: 5rem;
+    font-weight: lighter;
+    line-height: 3rem;
+    margin: 0;
+}
+
+.icon_button {
+    background: none;
+    font-size: 23px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    text-align: center;
+}
+
+.icon_button:focus {
+    border: none;
+    outline: none;
+}
+
+.icon_button:hover, .icon_button:focus {
+    background: #dbdbdb;
+}
+
+@media screen and (max-width: 768px){
+    .home-inputs{
+        flex-wrap: wrap;
+    }
+}

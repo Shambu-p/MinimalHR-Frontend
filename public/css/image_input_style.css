@@ -1,0 +1,37 @@
+
+.image-input, .file-input {
+    background: #133283;
+    color: white;
+    max-width: 100%;
+    min-width: 10rem;
+    min-height: 13rem;
+    transition-duration: 0.5s;
+}
+
+.image-input:hover,
+.image-input:focus,
+.file-input:hover,
+.file-input:focus {
+    background: #1338a7;
+}
+
+.image-input-image {
+    width: 100%;
+    height: auto;
+}
+
+.image-input i, .file-input i {
+    font-size: 5rem;
+    margin: auto;
+}
+
+.file-input-text {
+    width: 80%;
+    height: max-content;
+    text-align: center;
+    position: absolute;
+    word-wrap: break-word;
+    line-break: auto;
+    overflow-x: hidden;
+
+}
