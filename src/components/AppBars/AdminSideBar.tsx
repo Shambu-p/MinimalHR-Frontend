@@ -1,14 +1,30 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import AuthContext from "../../Contexts/AuthContext";
 
-export default function ({user}: any){
+export default function ({user}: any) {
+
+    const {setLoggedIn, setLoggedUser, removeCookie} = useContext(AuthContext);
 
     const navigate = useNavigate();
     const [loggedUser, setUser] = useState<any>({});
 
     useEffect(() => {
         setUser(user);
-    }, [user])
+    }, [user]);
+
+    const logout = () => {
+
+        const d = new Date();
+        d.setTime(d.getTime() - (24*60*60*1000));
+
+        removeCookie("login_token", {path: "/", expires: d.toUTCString()});
+        setLoggedUser(null);
+        setLoggedIn(false);
+        navigate("/login");
+
+    };
+
     return (
         <div className="admin-sidebar pt-3 pb-3">
             <div className="d-flex justify-content-start border-bottom mb-3 p-2">
@@ -45,6 +61,10 @@ export default function ({user}: any){
                     <button className="admin-sidebar-item d-flex justify-content-end" onClick={() => {navigate("/admin/profile/" + loggedUser.employee_id)}}>
                         Profile
                         <i className="bi bi-person-badge-fill ml-2"/>
+                    </button>
+                    <button className="admin-sidebar-item d-flex justify-content-end" onClick={logout}>
+                        Sign Out
+                        <i className="bi bi-door-closed ml-2"/>
                     </button>
                 </div>
             </div>

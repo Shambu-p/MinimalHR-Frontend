@@ -19,6 +19,7 @@ import {useCookies} from "react-cookie";
 import CreateVacancy from "./views/Admin/CreateVacancy";
 import VacanciesList from "./views/Admin/VacanciesList";
 import Profile from "./views/Profile";
+import ApplicationView from "./views/Application/ApplicationView";
 
 
 export default function (params: any) {
@@ -55,6 +56,7 @@ export default function (params: any) {
         type: "success"|"danger"|"warning"|"main",
         position?: "top-left-alert"|"bottom-left-alert"|"top-right-alert"|"bottom-right-alert"
     ) => {
+
         setAlertType(type);
         setAlertPosition(position ?? "top-left-alert");
         setShowAlert(true);
@@ -74,7 +76,8 @@ export default function (params: any) {
                         <Route path="/" element={<MainHome/>}/>
                         <Route path="/login" element={<LoginPage />}/>
                         <Route path="/check_application" element={<CheckApplication />}/>
-                        <Route path="/application_form" element={<ApplicationForm />}/>
+                        <Route path="/application_form/:vacancy_id" element={<ApplicationForm />}/>
+                        <Route path="/view_application/:application_number" element={<ApplicationView />}/>
                         <Route path="/admin" element={<AdminMain />}>
                             <Route path="home" element={<Home />}/>
                             <Route path="new_employee" element={<NewEmployee />}/>

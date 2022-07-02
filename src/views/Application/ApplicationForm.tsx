@@ -1,13 +1,65 @@
-import React, {useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import MainAppBar from "../../components/AppBars/Main";
 import MyButton from "../../components/Extra/MyButton";
 import CreateEmployeeForm from "../../components/CreateEmployeeForm";
+import {Request} from "../../API.Interaction/api";
+import {useNavigate, useParams} from "react-router-dom";
+import VacanciesModel from "../../Models/VacanciesModel";
+import AlertContext from "../../Contexts/AlertContext";
 
 export default function () {
 
-    const [submitted, setSubmitted] = useState<boolean>(false);
+    const {setAlert, setWaiting} = useContext(AlertContext);
 
-    const apply = (data: {address: any, detail: any}) => {
+    const params = useParams();
+    const navigate = useNavigate();
+    const [submitted, setSubmitted] = useState<any|null>(null);
+    const [vacancy, setVacancy] = useState<VacanciesModel|null>(null);
+
+    useEffect(() => {
+
+        let loadVacancy = async () => {
+
+            try{
+                let response = await Request("get", "/Vacancy/vacancy_detail/" + params.vacancy_id);
+                setVacancy(response);
+            }catch({message}){
+                setAlert(message, "danger");
+            }
+
+        };
+
+        loadVacancy();
+
+    }, []);
+
+    const apply = async (form: {address: any, detail: any}) => {
+
+        try{
+
+            setTimeout(() => {setWaiting(true)}, 1);
+            form.detail.salary = vacancy?.salary;
+            form.detail.position = vacancy?.position;
+            form.detail.department_id = vacancy?.department_id;
+            form.detail.vacancy_id = vacancy?.id;
+
+            let response = await Request("post", "/Employees/apply_for_vacancy", {
+                ...form.detail,
+                address: JSON.stringify(form.address)
+            });
+
+            setSubmitted(response.employee);
+            setWaiting(false);
+            setAlert("account created successfully", "success");
+
+        } catch({message}) {
+            setAlert(message, "danger");
+            setWaiting(false);
+        }
+
+    };
+
+    const viewApplication = () => {
 
     };
 
@@ -17,7 +69,7 @@ export default function () {
             <MainAppBar />
 
             <div className="d-flex">
-                {submitted ? (
+                {(submitted != null) ? (
                     <div className="w-75 p-3 rounded shadow-sm bg-white" style={{margin: "auto"}}>
 
                         <div className="d-flex">
@@ -25,12 +77,13 @@ export default function () {
                             <h5 className="display-4" style={{marginTop: "auto", marginBottom: "auto"}}>Application was Successful!</h5>
                         </div>
                         <p className="lead mb-3">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem, dolore eligendi eos explicabo
-                            iure necessitatibus praesentium quia reprehenderit. Autem error harum iste minima, minus numquam
-                            odit officia quis similique voluptatem!
+                            Next time if you want to check your application progress use <b>{submitted.application_number}</b> as an application number
                         </p>
 
-                        <MyButton text="OK" color="main" icon="bi bi-check2-square" />
+                        <div className="d-flex justify-content-between">
+                            <MyButton text="Home" color="main" icon="bi bi-house" />
+                            <MyButton text="View Application" onClick={() => {navigate("/view_application/" + submitted.application_number)}} color="main" icon="bi bi-check2-square" />
+                        </div>
 
                     </div>
                 ) : (

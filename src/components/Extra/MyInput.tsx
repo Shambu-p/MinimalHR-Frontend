@@ -6,7 +6,7 @@ export default function (props: {
     icon?: string,
     onChange?: ChangeEventHandler<HTMLInputElement>,
     required?: boolean,
-    value?: string
+    value?: string|number
 }){
 
     return (

@@ -27,6 +27,7 @@ export default function (){
         return (
             <VacancyCard
                 key={vacancy.id}
+                id={vacancy.id}
                 position={vacancy.position}
                 department={vacancy.department_id}
                 description={vacancy.description}

@@ -21,7 +21,9 @@ export default function ({department_input, createOnSubmit}: {
         phone_number: string,
         documents: any,
         department_id: number,
-        education_level: string
+        education_level: string,
+        salary: number,
+        position: string
     }>({
         profile_picture: "",
         full_name: "",
@@ -29,7 +31,9 @@ export default function ({department_input, createOnSubmit}: {
         phone_number: "",
         documents: "",
         department_id: 0,
-        education_level: ""
+        education_level: "",
+        position: "",
+        salary: 0
     });
     const [addresses, setAddresses] = useState<AddressModel[]>([]);
     const [departments, setDepartments] = useState<DepartmentModel[]>([])
@@ -100,7 +104,7 @@ export default function ({department_input, createOnSubmit}: {
             </p>
             <div className="row mb-5">
                 <div className="col-sm-12 col-md-6 col-lg-3 mb-3">
-                    <ImageInput onChange={(file: any) => {onChangeInput("documents", file);}} />
+                    <ImageInput onChange={(file: any) => {onChangeInput("profile_picture", file);}} />
                 </div>
                 <div className="col pl-3">
                     <div className="input-group mb-3">
@@ -150,14 +154,25 @@ export default function ({department_input, createOnSubmit}: {
             </div>
 
             {department_input ? (
-                <div className="input-group mb-5">
+                <div>
+                    <p className="lead text-center mb-3 mt-5">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus dignissimos
+                        incidunt magni necessitatibus neque obcaecati, odio perferendis quod sed vel,
+                        veritatis, voluptas. Enim exercitationem neque nisi obcaecati quae quia unde!
+                    </p>
                     <div className="input-group mb-3">
                         <SelectInput
-                            icon="bi bi-award"
+                            icon="bi bi-bookmark-fill"
                             list={departments.map(dept => ({key: dept.id, value: dept.name}))}
-                            placeholder="Education Level"
+                            placeholder="Select Department"
                             onChange={(item: any) => {onChangeInput("department_id", item.key);}}
                         />
+                    </div>
+                    <div className="input-group mb-3">
+                        <MyInput value={Inputs.position} type="text" placeholder="Position" icon="bi bi-tags-fill" onChange={(event: any) => {onChangeInput("position", event.target.value);}} />
+                    </div>
+                    <div className="input-group mb-5">
+                        <MyInput value={Inputs.salary} type="number" placeholder="Salary" icon="bi bi-coin" onChange={(event: any) => {onChangeInput("salary", event.target.value);}} />
                     </div>
                 </div>
             ):(<></>)}
