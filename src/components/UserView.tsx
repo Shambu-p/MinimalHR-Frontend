@@ -5,13 +5,20 @@ import AlertContext from "../Contexts/AlertContext";
 import AuthContext from "../Contexts/AuthContext";
 import {Request} from "../API.Interaction/api";
 import AddressModel from "../Models/AddressModel";
+import MyButton from "./Extra/MyButton";
+import DepartmentModel from "../Models/DepartmentModel";
+import {useNavigate} from "react-router-dom";
 
 export default function (props: {id: number, type: ("application"|"profile")}) {
 
     const {setAlert, setWaiting} = useContext(AlertContext);
     const {isLoggedIn, loggedUser, cookies} = useContext(AuthContext);
 
-    const [employee, setEmployee] = useState<any>({});
+    const navigate = useNavigate();
+    const [employee, setEmployee] = useState<any>(null);
+    const [account, setAccount] = useState<any>({});
+    const [department, setDepartment] = useState<DepartmentModel>();
+    const [eventDate, setEventDate] = useState<any>({});
     const [addresses, setAddresses] = useState<any[]>([]);
 
     useEffect(() => {
@@ -25,8 +32,10 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
                 employee_id: props.id
             });
 
-            setEmployee(response.detail);
+            setAccount(response.account);
             setAddresses(response.address);
+            setEventDate(response.event_date);
+            setEmployee(response.detail);
             setWaiting(false);
 
         };
@@ -35,9 +44,14 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
 
             let response = await Request("get", "/Employees/check_application/" + props.id);
 
-            setEmployee(response.detail);
             setAddresses(response.address);
+            setDepartment(response.department);
+            setEmployee(response.detail);
             setWaiting(false);
+
+            if(response.detail.status == "pending"){
+                changeApplicationState("viewed");
+            }
 
         };
 
@@ -55,6 +69,7 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
         }else{
             loadApplication()
         }
+
 
 
     }, [loggedUser]);
@@ -120,12 +135,28 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
                 id: id
             });
 
-            // let f_address = addresses.filter(address => {
-            //     return address.id != address_id;
-            // });
-            // setAddresses(f_address);
-
             setAlert("address Changed!", "success");
+            setWaiting(false);
+
+        } catch({message}) {
+            setAlert(message, "danger");
+            setWaiting(false);
+        }
+
+    };
+
+    const changeApplicationState = async (state: "accepted"|"viewed"|"rejected") => {
+
+        try{
+
+            setTimeout(() => {setWaiting(true)}, 1);
+            await Request("post", "/Employees/change_application_status", {
+                token: cookies.login_token,
+                application_id: employee.id,
+                status: state
+            });
+
+            setAlert("Status Changed!", "main");
             setWaiting(false);
 
         } catch({message}) {
@@ -143,7 +174,7 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
                 <div className="col pl-4">
                     <ImageInput src={"http://localhost:8080/Employees/profile_picture/"+(props.type == "profile" ? props.id : employee.id)} />
                 </div>
-                <div className="col-sm-12 col-lg-9 d-flex">
+                <div className="col-sm-12 col-lg-9 d-flex home-inputs">
 
                     <div style={{margin: "auto"}}>
 
@@ -165,7 +196,7 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
 
                         <div className="lead">
                             <i className="bi bi-bookmark mr-3" />
-                            {employee.employee_department}
+                            {department?.name}
                         </div>
                         <div className="lead mb-4">
                             <i className="bi bi-tags-fill mr-3" />
@@ -177,10 +208,17 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
                             <b>{employee.salary} ETB</b>
                         </h4>
 
-                        <button className="icon_button rounded mr-3" type="submit">
-                            <i className="bi bi-pencil-square text-primary" /> Edit
-                        </button>
-                        <button className="icon_button rounded" type="submit">
+                        {props.type == "profile" && loggedUser.employee_id == props.id ? (
+                            <button className="icon_button rounded mr-3" type="button">
+                                <i className="bi bi-pencil-square text-primary" /> Edit
+                            </button>
+                        ):""}
+                        {props.type == "profile" && loggedUser.employee_id == props.id ? (
+                            <button className="icon_button rounded mr-3" type="button" onClick={() => {navigate("/admin/change_password")}}>
+                                <i className="bi bi-safe text-primary" /> Change Password
+                            </button>
+                        ):""}
+                        <button className="icon_button rounded" type="button">
                             <i className="bi bi-download text-success" /> Documents
                         </button>
 
@@ -190,21 +228,63 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
             </div>
 
             <div className="bg-white p-3 mb-3 border-bottom">
-                <div className="container d-flex justify-content-between">
 
-                    <span style={{fontSize: "25px"}}>
-                        <i className="bi bi-clipboard2-pulse-fill text-primary mr-3" />
-                        {employee.status}
-                    </span>
-                    <span style={{fontSize: "25px"}}>
-                        <i className="bi bi-calendar-date text-success mr-3" />
-                        Start Working
-                    </span>
-                    <span style={{fontSize: "25px"}}>
-                        <i className="bi bi-calendar-date text-danger mr-3" />
-                        Termination Date
-                    </span>
-                </div>
+                {props.type == "application" ? (
+                    <div className="container pt-3 pb-3 border-bottom d-flex justify-content-between">
+                        <span style={{fontSize: "25px"}}>
+                            <i className="bi bi-clipboard2-pulse-fill text-primary mr-3" />
+                            {employee.status}
+                        </span>
+                    </div>
+                ):(
+                    <div className="container pt-3 pb-3 border-bottom d-flex justify-content-between">
+                        {eventDate.work_start_date ? (
+                            <span style={{fontSize: "25px"}}>
+                                <i className="bi bi-calendar-date text-success mr-3" />
+                                Start Working {eventDate.work_start_date}
+                            </span>
+                        ): ""}
+                        {eventDate.termination_date ? (
+                            <span style={{fontSize: "25px"}}>
+                                <i className="bi bi-calendar-date text-danger mr-3" />
+                                Terminated on {eventDate.termination_date}
+                            </span>
+                        ): ""}
+
+                    </div>
+                )}
+
+                {props.type == "profile" ? (
+                    <div className="container pt-3 pb-3 d-flex justify-content-between">
+                        {account.status == "active" ? (
+                            <button className="icon_button rounded" type="submit">
+                                <i className="bi bi-person-dash-fill text-warning" /> Suspend
+                            </button>
+                        ):(
+                            <button className="icon_button rounded" type="submit">
+                                <i className="bi bi-person-check-fill text-success" /> Activate
+                            </button>
+                        )}
+                        {account.status != "deactive" ? (
+                            <button className="icon_button rounded" type="submit">
+                                <i className="bi bi-person-x-fill text-danger" /> Deactivate
+                            </button>
+                        ):""}
+
+                    </div>
+                ) : (
+                    ((employee.status == "pending" || employee.status == "viewed") && loggedUser && loggedUser.is_admin) ? (
+                        <div className="container pt-3 pb-3 d-flex justify-content-between">
+                            <button className="icon_button rounded" type="button" onClick={() => {changeApplicationState("accepted")}}>
+                                <i className="bi bi-person-check-fill text-success" /> Accept
+                            </button>
+                            <button className="icon_button rounded" type="button" onClick={() => {changeApplicationState("rejected")}}>
+                                <i className="bi bi-person-x-fill text-danger" /> Reject
+                            </button>
+                        </div>
+                    ):""
+                )}
+
             </div>
 
             <div className="row" style={{margin: 0}}>
@@ -235,6 +315,18 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
             </div>
 
         </div>
-    ) : (<></>);
+    ) : (
+        <div className="p-3 bg-white mt-5 shadow rounded">
+            <h3 className="display-3 text-center">
+                {props.type == "application" ? "Application not found!":"Account Not found!"}
+            </h3>
+            <p className="lead text-center mb-5">
+                The id or the application number were not assigned to anyone. it could be because
+                the id or the application number is incorrect otherwise it is system failure so
+                try again later.
+            </p>
+            <MyButton text="Back to Home" icon="bi bi-house" />
+        </div>
+    );
 
 }

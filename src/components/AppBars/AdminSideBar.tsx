@@ -36,14 +36,6 @@ export default function ({user}: any) {
                         Employees
                         <i className="bi bi-people-fill ml-2"/>
                     </button>
-                    <button className="admin-sidebar-item d-flex justify-content-end" onClick={() => {navigate("/admin/employees")}}>
-                        Accounts
-                        <i className="bi bi-safe ml-2"/>
-                    </button>
-                    <button className="admin-sidebar-item d-flex justify-content-end">
-                        Applicants
-                        <i className="bi bi-newspaper ml-2"/>
-                    </button>
                 </div>
 
                 <div className="mb-3">
@@ -51,7 +43,7 @@ export default function ({user}: any) {
                         Vacancies
                         <i className="bi bi-briefcase-fill ml-2"/>
                     </button>
-                    <button className="admin-sidebar-item d-flex justify-content-end">
+                    <button className="admin-sidebar-item d-flex justify-content-end" onClick={() => {navigate("/admin/department_list")}}>
                         Departments
                         <i className="bi bi-bookmark-fill ml-2"/>
                     </button>

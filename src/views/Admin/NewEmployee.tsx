@@ -7,7 +7,7 @@ import AuthContext from "../../Contexts/AuthContext";
 export default function() {
 
     const {setAlert, setWaiting} = useContext(AlertContext);
-    const {isLoggedIn, loggedUser, setLoggedUser, setLoggedIn, setCookie, cookies} = useContext(AuthContext);
+    const {cookies} = useContext(AuthContext);
 
     const onCreateEmployee = async (form: {address: any, detail: any}) => {
         try{

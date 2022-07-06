@@ -2,8 +2,8 @@ import React, {ChangeEventHandler, useState} from "react";
 
 export default function (props: {
     list: { key: string|number, value: string }[],
-    placeholder?: string
-    // type: "text"|"email"|"password"|"number",
+    placeholder?: string,
+    value?: string|number,
     icon?: string,
     onChange?: (item: {key: string|number, value: string}) => void
 }) {

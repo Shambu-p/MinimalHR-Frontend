@@ -125,16 +125,18 @@ export default function ({data, displayType, editable, editOnSubmit, createOnSub
                     </button>
                 </div>
             ) : (
-                <div className="d-flex mt-4 justify-content-center">
-                    {editable ? (
+                editable ? (
+                    <div className="d-flex mt-4 justify-content-center">
                         <button className="icon_button rounded mr-3" type="button">
                             <i className="bi bi-pencil-square text-info" onClick={() => {setState("edit");}}/>
                         </button>
-                    ) : (<></>)}
-                    <button className="icon_button rounded mr-3" type="button" onClick={deleteAddress}>
-                        <i className="bi bi-trash3 text-danger" />
-                    </button>
-                </div>
+
+                        <button className="icon_button rounded mr-3" type="button" onClick={deleteAddress}>
+                            <i className="bi bi-trash3 text-danger" />
+                        </button>
+                    </div>
+                ) : (<></>)
+
             )}
 
         </form>

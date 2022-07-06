@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import MainHome from "./views/MainHome";
 import {Login, information} from "./API.Interaction/AuthAPI";
 import LoginPage from "./views/Login";
 import Error from "./views/Error";
@@ -17,9 +16,16 @@ import Home from "./views/Admin/Home";
 import EmployeesList from "./views/Admin/EmployeesList";
 import {useCookies} from "react-cookie";
 import CreateVacancy from "./views/Admin/CreateVacancy";
-import VacanciesList from "./views/Admin/VacanciesList";
 import Profile from "./views/Profile";
 import ApplicationView from "./views/Application/ApplicationView";
+import VacancyView from "./views/Vacancy/VacancyView";
+import VacancyLister from "./views/Vacancy/VacancyLister";
+import Applicants from "./views/Admin/Applicants";
+import SingleApplicant from "./views/Admin/SingleApplicant";
+import EditVacancy from "./views/Admin/EditVacancy";
+import ChangePassword from "./views/Admin/ChangePassword";
+import DepartmentList from "./views/Admin/DepartmentList";
+import DepartmentView from "./views/Admin/DepartmentView";
 
 
 export default function (params: any) {
@@ -27,7 +33,7 @@ export default function (params: any) {
     const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
     const [loggedUser, setLoggedUser] = useState<null | Users>(null);
     const [cookies, setCookie, removeCookie] = useCookies(["login_token"]);
-    // const [cookies, setCookies, removeCookies] = useState<string | null>(cookies.get("login_token"))
+    const [authWaiting, setAuthWaiting] = useState<boolean>(false);
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [showWaiting, setWaiting] = useState<boolean>(false);
     const [alertType, setAlertType] = useState<"success"|"danger"|"warning"|"main">("main");
@@ -38,9 +44,11 @@ export default function (params: any) {
 
         const checkAuth = async (token: string) => {
 
+            setTimeout(() => {setAuthWaiting(true);}, 1);
             let response = await information(token);
             setLoggedIn(response.status);
             setLoggedUser(response.data);
+            setAuthWaiting(false);
 
         };
 
@@ -70,21 +78,29 @@ export default function (params: any) {
 
     return (
         <AlertContext.Provider value={{showAlert, alertType, setAlertType, setAlert, setWaiting}}>
-            <AuthContext.Provider value={{isLoggedIn, loggedUser, setLoggedUser, setLoggedIn, setCookie, cookies, removeCookie}}>
+            <AuthContext.Provider value={{isLoggedIn, loggedUser, setLoggedUser, setLoggedIn, setCookie, cookies, removeCookie, authWaiting}}>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/" element={<MainHome/>}/>
+                        <Route path="/" element={<VacancyLister/>}/>
                         <Route path="/login" element={<LoginPage />}/>
                         <Route path="/check_application" element={<CheckApplication />}/>
                         <Route path="/application_form/:vacancy_id" element={<ApplicationForm />}/>
                         <Route path="/view_application/:application_number" element={<ApplicationView />}/>
+                        <Route path="/vacancy_view/:vacancy_id" element={<VacancyView />}/>
                         <Route path="/admin" element={<AdminMain />}>
                             <Route path="home" element={<Home />}/>
                             <Route path="new_employee" element={<NewEmployee />}/>
                             <Route path="employees" element={<EmployeesList />}/>
-                            <Route path="vacancies" element={<VacanciesList />}/>
+                            <Route path="vacancies" element={<VacancyLister />}/>
                             <Route path="create_vacancy" element={<CreateVacancy />}/>
                             <Route path="profile/:employee_id" element={<Profile />}/>
+                            <Route path="vacancy_view/:vacancy_id" element={<VacancyView />}/>
+                            <Route path="applicant_list/:vacancy_id" element={<Applicants />}/>
+                            <Route path="view_application/:application_number" element={<SingleApplicant />}/>
+                            <Route path="edit_vacancy/:vacancy_id" element={<EditVacancy />}/>
+                            <Route path="change_password" element={<ChangePassword />}/>
+                            <Route path="department_list" element={<DepartmentList />}/>
+                            <Route path="department_view/:department_id" element={<DepartmentView />}/>
                         </Route>
                         <Route path="*" element={<Error/>}/>
                     </Routes>

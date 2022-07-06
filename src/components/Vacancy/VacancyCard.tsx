@@ -1,6 +1,5 @@
 import MyButton from "../Extra/MyButton";
-import React, {useContext} from "react";
-import AlertContext from "../../Contexts/AlertContext";
+import React from "react";
 import {useNavigate} from "react-router-dom";
 
 export default function (props: {
@@ -8,10 +7,10 @@ export default function (props: {
     position: string,
     department: number,
     salary: number,
-    description: string
+    description: string,
+    is_public: boolean
 }){
 
-    const {setAlert} = useContext(AlertContext);
     const navigate = useNavigate();
 
     return (
@@ -35,7 +34,13 @@ export default function (props: {
 
                 <div className="d-flex justify-content-end" style={{flexWrap: "wrap"}}>
                     <MyButton text="Apply" onClick={() => {navigate("/application_form/"+props.id);}} icon="bi bi-check2-square" color="success" />
-                    <MyButton text="View" icon="bi bi-eye-fill" />
+                    <MyButton text="View" icon="bi bi-eye-fill" onClick={() => {
+                        if(props.is_public){
+                            navigate("/vacancy_view/"+props.id);
+                        }else{
+                            navigate("/admin/vacancy_view/"+props.id);
+                        }
+                    }} />
                 </div>
 
             </div>
