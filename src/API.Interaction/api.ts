@@ -1,7 +1,5 @@
 import axios from "axios";
 
-// let form = new FormData();
-// form.append("", "", "")
 
 const api = axios.create({
     baseURL: "http://localhost:8080/",
@@ -11,11 +9,9 @@ const api = axios.create({
     //     "Content-Type": 'multipart/form-data; boudary=' + form._boundary,
     //     "Content-Type": 'application/x-www-form-urlencoded',
     //     "Cache-Control": "no-cache",
-    //     "Postman-Token": "42e6c291-9a09-c29f-f28f-11872e2490a5",
     //     "Access-Control-Allow-Origin": "*",
     //     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
     // }
-    // baseURL: "http://192.168.1.15:1111/"
 });
 
 export async function Request(type: string, url: string, request_data?: (object | FormData)): Promise<any>{
@@ -23,7 +19,7 @@ export async function Request(type: string, url: string, request_data?: (object 
 
         let data = request_data ? prepareData(request_data) : new FormData();
         let response = ((type == "post") ? await api.post(url, data) : await api.get(url));
-        if(response.data.message){
+        if(response.data.message || response.data.message == ""){
             throw new Error(response.data.message);
         }
         // console.log(response);

@@ -1,4 +1,4 @@
-import MyButton from "../Extra/MyButton";
+import MyButton from "./Extra/MyButton";
 import React from "react";
 import {useNavigate} from "react-router-dom";
 

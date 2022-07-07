@@ -9,7 +9,7 @@ export default function (){
 
     return (
         <div className="container">
-            <MainAppbar page="home" />
+            <MainAppbar />
             <UserView id={parseInt(params.application_number ?? "0")} type={"application"} />
         </div>
     );

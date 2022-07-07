@@ -8,7 +8,7 @@ import VacanciesModel from "../../Models/VacanciesModel";
 import DepartmentModel from "../../Models/DepartmentModel";
 import MainAppbar from "../../components/AppBars/Main";
 
-export default function (){
+export default function () {
 
     const {setAlert, setWaiting} = useContext(AlertContext);
     const {isLoggedIn, authWaiting, loggedUser} = useContext(AuthContext);
@@ -58,7 +58,7 @@ export default function (){
     
     return !authWaiting && vacancy ? (
         <div className={window.location.pathname.startsWith("/vacancy_view") ? "container p-0":""}>
-            {window.location.pathname.startsWith("/vacancy_view") ? (<MainAppbar page="home" />) : ""}
+            {window.location.pathname.startsWith("/vacancy_view") ? (<MainAppbar />) : ""}
             <div className="card-body rounded shadow-sm bg-white">
                 <div className="d-flex justify-content-between border-bottom pb-2">
                     <div>

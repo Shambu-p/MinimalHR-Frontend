@@ -4,6 +4,8 @@ import {Request} from "../../API.Interaction/api";
 import AlertContext from "../../Contexts/AlertContext";
 import AuthContext from "../../Contexts/AuthContext";
 import {useNavigate} from "react-router-dom";
+import MyButton from "../../components/Extra/MyButton";
+import TableDisplay from "../../components/Extra/TableDisplay";
 
 export default function () {
 
@@ -28,17 +30,27 @@ export default function () {
         loadDepartments();
 
     }, []);
+
+    const row = departments.map(department => ([
+        department.name,
+        (<button
+            className="icon_button rounded mr-3"
+            type="button"
+            onClick={() => {navigate("/admin/department_view/"+department.id)}}
+        >
+            <i className="bi bi-eye-fill text-primary" /> View
+        </button>)
+    ]));
     
     return (
-        <div className="container">
-            {departments.map(department => (
-                <div className="card-body bg-white rounded shadow-sm mb-3">
-                    <h4 className="card-title">{department.name}</h4>
-                    <button className="icon_button rounded mr-3" type="button" onClick={() => {navigate("/admin/department_view/"+department.id)}}>
-                        <i className="bi bi-eye-fill text-primary" /> View
-                    </button>
-                </div>
-            ))}
+        <div className="container bg-white shadow-sm rounded p-3">
+            <div className="d-flex justify-content-end">
+                <MyButton text={"New"} icon={"bi bi-plus-square"} onClick={() => {navigate("/admin/create_department");}} />
+            </div>
+            <TableDisplay
+                columns={["Department Name", "Actions"]}
+                rows={row}
+            />
         </div>
     );
 };

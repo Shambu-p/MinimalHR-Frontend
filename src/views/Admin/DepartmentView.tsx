@@ -2,13 +2,14 @@ import React, {useContext, useEffect, useState} from "react";
 import DepartmentModel from "../../Models/DepartmentModel";
 import {Request} from "../../API.Interaction/api";
 import AlertContext from "../../Contexts/AlertContext";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 export default function (){
 
     const {setAlert, setWaiting} = useContext(AlertContext);
 
     const params = useParams();
+    const navigate = useNavigate();
     const [department, setDepartment] = useState<DepartmentModel>();
 
     useEffect(() => {
@@ -34,7 +35,7 @@ export default function (){
             <span className="card-subtitle">{department?.department_head}</span> <br/>
 
             <div className="d-flex justify-content-end pt-3 border-top mt-5">
-                <button className="icon_button rounded mr-3 " type="button">
+                <button className="icon_button rounded mr-3 " type="button" onClick={() => {navigate("/admin/change_department/"+params.department_id);}}>
                     <i className="bi bi-pencil-square text-primary" /> Edit
                 </button>
             </div>

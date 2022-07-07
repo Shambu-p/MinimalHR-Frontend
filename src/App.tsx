@@ -16,7 +16,7 @@ import Home from "./views/Admin/Home";
 import EmployeesList from "./views/Admin/EmployeesList";
 import {useCookies} from "react-cookie";
 import CreateVacancy from "./views/Admin/CreateVacancy";
-import Profile from "./views/Profile";
+import Profile from "./views/Admin/Profile";
 import ApplicationView from "./views/Application/ApplicationView";
 import VacancyView from "./views/Vacancy/VacancyView";
 import VacancyLister from "./views/Vacancy/VacancyLister";
@@ -26,6 +26,7 @@ import EditVacancy from "./views/Admin/EditVacancy";
 import ChangePassword from "./views/Admin/ChangePassword";
 import DepartmentList from "./views/Admin/DepartmentList";
 import DepartmentView from "./views/Admin/DepartmentView";
+import DepartmentForm from "./components/DepartmentForm";
 
 
 export default function (params: any) {
@@ -101,6 +102,8 @@ export default function (params: any) {
                             <Route path="change_password" element={<ChangePassword />}/>
                             <Route path="department_list" element={<DepartmentList />}/>
                             <Route path="department_view/:department_id" element={<DepartmentView />}/>
+                            <Route path="create_department" element={<DepartmentForm />}/>
+                            <Route path="change_department/:department_id" element={<DepartmentForm />}/>
                         </Route>
                         <Route path="*" element={<Error/>}/>
                     </Routes>

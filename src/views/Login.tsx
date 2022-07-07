@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {useNavigate} from "react-router-dom";
-import {loginAuth, Login} from "../API.Interaction/AuthAPI";
+import {Login} from "../API.Interaction/AuthAPI";
 import MainAppbar from "../components/AppBars/Main";
 import MyInput from "../components/Extra/MyInput";
 import MyButton from "../components/Extra/MyButton";
@@ -59,7 +59,7 @@ export default function (){
 
     return (
         <div className="container">
-            <MainAppbar page="home" />
+            <MainAppbar />
             <div className="d-flex justify-content-center">
                 <form onSubmit={submitForm} className="login-form-container pt-3 pb-3 mt-4">
                     <div className="mb-3 d-flex justify-content-center">

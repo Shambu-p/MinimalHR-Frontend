@@ -1,6 +1,6 @@
 import React from "react";
 import {useParams} from "react-router-dom";
-import UserView from "../components/UserView";
+import UserView from "../../components/UserView";
 
 export default function () {
 

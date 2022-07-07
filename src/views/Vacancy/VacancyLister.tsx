@@ -4,7 +4,7 @@ import DepartmentModel from "../../Models/DepartmentModel";
 import {Request} from "../../API.Interaction/api";
 import MyInput from "../../components/Extra/MyInput";
 import SelectInput from "../../components/Extra/SelectInput";
-import VacancyCard from "../../components/Vacancy/VacancyCard";
+import VacancyCard from "../../components/VacancyCard";
 import MyButton from "../../components/Extra/MyButton";
 import {useNavigate} from "react-router-dom";
 import AuthContext from "../../Contexts/AuthContext";
@@ -75,7 +75,7 @@ export default function (){
     console.log(loggedUser);
     return authWaiting ? (<></>):(
         <div className={(window.location.pathname == "/") ? "container p-0":""}>
-            {(window.location.pathname == "/") ? (<MainAppbar page="home" />) : ""}
+            {(window.location.pathname == "/") ? (<MainAppbar />) : ""}
             <div className="d-flex justify-content-between home-inputs mb-3">
 
                 {isLoggedIn && loggedUser && loggedUser.is_admin ? (
