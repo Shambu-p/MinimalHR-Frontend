@@ -75,7 +75,7 @@ export default function (){
 
                     <div className="d-flex justify-content-between">
                         <MyButton text="Sign In" type="submit" color="success" icon="bi bi-door-open" />
-                        <MyButton text="Forgot Password" color="danger" icon="bi bi-key"  />
+                        <MyButton text="Forgot Password" color="danger" icon="bi bi-key" onClick={() => {navigate("/password_recovery");}} />
                     </div>
 
                 </form>

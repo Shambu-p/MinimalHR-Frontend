@@ -1,6 +1,5 @@
 import React, {useContext, useState} from "react";
 import MyInput from "../../components/Extra/MyInput";
-import {Simulate} from "react-dom/test-utils";
 import MyButton from "../../components/Extra/MyButton";
 import {Request} from "../../API.Interaction/api";
 import AlertContext from "../../Contexts/AlertContext";
@@ -59,7 +58,7 @@ export default function (){
             </div>
 
             <div className="input-group mb-5">
-                <MyInput value={Inputs.confirm_password} type={"password"} placeholder="New Password" icon="bi bi-key-fill" onChange={(event: any) => {inputOnChange("new_password", event.target.value)}} />
+                <MyInput value={Inputs.confirm_password} type={"password"} placeholder="New Password" icon="bi bi-key-fill" onChange={(event: any) => {inputOnChange("confirm_password", event.target.value)}} />
             </div>
 
             <MyButton type={"submit"} text={"Change Password"} icon={"bi bi-safe"} />

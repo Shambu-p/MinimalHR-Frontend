@@ -7,13 +7,12 @@ import AuthContext from "../../Contexts/AuthContext";
 
 export default function() {
 
-    const {setAlert, setWaiting} = useContext(AlertContext);
-    const {isLoggedIn, loggedUser, setLoggedUser, setLoggedIn, setCookie, cookies} = useContext(AuthContext);
+
 
     return (
         <div className="d-flex p-0 admin-container">
             <div className="col-sm-12 col-md-4 col-lg-2 pl-0">
-                <AdminSideBar user={loggedUser} />
+                <AdminSideBar />
             </div>
             <div className="col admin-outlet-container">
                 <div className="p-3 bg-white shadow-sm rounded mb-3 mt-3 d-flex justify-content-between">

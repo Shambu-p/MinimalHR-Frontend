@@ -44,6 +44,7 @@ export default function () {
 
             let response = await Request("post", "/Vacancy/update_vacancy", {
                 ...vacancy,
+                token: loggedUser.token,
                 employee_id: loggedUser.employee_id,
                 vacancy_id: vacancy?.id,
                 status: state

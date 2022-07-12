@@ -27,6 +27,7 @@ import ChangePassword from "./views/Admin/ChangePassword";
 import DepartmentList from "./views/Admin/DepartmentList";
 import DepartmentView from "./views/Admin/DepartmentView";
 import DepartmentForm from "./components/DepartmentForm";
+import PasswordRecovery from "./views/PasswordRecovery";
 
 
 export default function (params: any) {
@@ -88,6 +89,7 @@ export default function (params: any) {
                         <Route path="/application_form/:vacancy_id" element={<ApplicationForm />}/>
                         <Route path="/view_application/:application_number" element={<ApplicationView />}/>
                         <Route path="/vacancy_view/:vacancy_id" element={<VacancyView />}/>
+                        <Route path="/password_recovery" element={<PasswordRecovery />} />
                         <Route path="/admin" element={<AdminMain />}>
                             <Route path="home" element={<Home />}/>
                             <Route path="new_employee" element={<NewEmployee />}/>

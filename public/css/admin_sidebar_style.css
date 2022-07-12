@@ -30,6 +30,7 @@
 }
 
 .admin-sidebar-button {
+    display: none;
     font-size: 2rem;
     color: whitesmoke;
     cursor: pointer;
@@ -55,6 +56,11 @@
 }
 
 @media screen and (max-width: 767px) {
+
+    .admin-sidebar-button {
+        display: block;
+    }
+
     #admin_sidebar_content {
         display: none;
     }

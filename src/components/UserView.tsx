@@ -166,13 +166,62 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
 
     };
 
+    const changeAccountStatus = async (state: "active"|"suspended"|"deactive") => {
+
+        try{
+
+            setTimeout(() => {setWaiting(true)}, 1);
+            await Request("post", "/Account/change_status", {
+                token: cookies.login_token,
+                employee_id: employee.id,
+                status: state
+            });
+
+            setAlert("Status Changed!", "main");
+            setWaiting(false);
+
+        } catch({message}) {
+            setAlert(message, "danger");
+            setWaiting(false);
+        }
+
+    };
+
+    const changeProfilePicture = async (image: any) => {
+
+        if(loggedUser.employee_id != props.id){
+            console.log(loggedUser.employee_id, " ", props.id);
+            return;
+        }
+
+        setTimeout(() => {setWaiting(true);}, 1);
+        try{
+
+            await Request("post", "Employees/change_profile_picture", {
+                token: loggedUser.token,
+                profile_picture: image
+            });
+
+            setAlert("image changed successfully", "success");
+
+        } catch({message}){
+            setAlert(message, "danger");
+        }
+
+        setWaiting(false);
+
+    };
+
     let index = -1;
 
     return employee ? (
         <div >
             <div className="row pt-4 pb-4 alert-info" style={{margin: 0}}>
                 <div className="col pl-4">
-                    <ImageInput src={"http://localhost:8080/Employees/profile_picture/"+(props.type == "profile" ? props.id : employee.id)} />
+                    <ImageInput
+                        src={"http://localhost:8080/Employees/profile_picture/"+(props.type == "profile" ? props.id : employee.id)}
+                        onChange={changeProfilePicture}
+                    />
                 </div>
                 <div className="col-sm-12 col-lg-9 d-flex home-inputs">
 
@@ -218,7 +267,11 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
                                 <i className="bi bi-safe text-primary" /> Change Password
                             </button>
                         ):""}
-                        <button className="icon_button rounded" type="button">
+                        <button
+                            className="icon_button rounded"
+                            type="button"
+                            onClick={() => {window.open("http://localhost:8080/Employees/document/"+employee.id)}}
+                        >
                             <i className="bi bi-download text-success" /> Documents
                         </button>
 
@@ -257,16 +310,16 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
                 {props.type == "profile" ? (
                     <div className="container pt-3 pb-3 d-flex justify-content-between">
                         {account.status == "active" ? (
-                            <button className="icon_button rounded" type="submit">
+                            <button className="icon_button rounded" type="submit" onClick={() => {changeAccountStatus("suspended")}}>
                                 <i className="bi bi-person-dash-fill text-warning" /> Suspend
                             </button>
                         ):(
-                            <button className="icon_button rounded" type="submit">
+                            <button className="icon_button rounded" type="submit" onClick={() => {changeAccountStatus("active")}}>
                                 <i className="bi bi-person-check-fill text-success" /> Activate
                             </button>
                         )}
                         {account.status != "deactive" ? (
-                            <button className="icon_button rounded" type="submit">
+                            <button className="icon_button rounded" type="submit" onClick={() => {changeAccountStatus("deactive")}}>
                                 <i className="bi bi-person-x-fill text-danger" /> Deactivate
                             </button>
                         ):""}
