@@ -6,7 +6,6 @@ export default function (){
 
     return (
         <div>
-            {/*<MainAppBar />*/}
             <div className='p-4 rounded shadow-sm bg-white'>
                 <h4 className="display-4">Welcome Home</h4>
                 <p className="lead mb-5">

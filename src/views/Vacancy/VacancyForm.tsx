@@ -7,6 +7,8 @@ import {createInterface, Interface} from "readline";
 import AlertContext from "../../Contexts/AlertContext";
 import AuthContext from "../../Contexts/AuthContext";
 import {useNavigate} from "react-router-dom";
+import DepartmentAPI from "../../API.Interaction/DepartmentAPI";
+import VacancyAPI from "../../API.Interaction/VacancyAPI";
 
 export default function (props: {vacancy_id?: number}){
 
@@ -46,12 +48,12 @@ export default function (props: {vacancy_id?: number}){
     useEffect(() => {
 
         let loadDepartment = async () => {
-            setDepartments(await Request("get", "/Department/all"));
+            setDepartments(await DepartmentAPI.getAll());
         };
 
         let loadVacancy = async () => {
             try{
-                let response = await Request("get", "/Vacancy/vacancy_detail/"+props.vacancy_id);
+                let response = await VacancyAPI.vacancyDetail(props.vacancy_id ?? 0);
                 setInputs(response.detail);
             } catch({message}){
                 setAlert(message, "danger");
@@ -86,7 +88,7 @@ export default function (props: {vacancy_id?: number}){
 
         try{
 
-            let response = await Request("post", "/Vacancy/post_vacancy", {...Inputs, token: cookies.login_token, employee_id: loggedUser.employee_id});
+            let response = await VacancyAPI.createVacancy(cookies.login_token, loggedUser.employee_id, Inputs);
             setAlert("Vacancy Posted Successfully", "success");
             navigate("/admin/vacancies");
 
@@ -94,7 +96,7 @@ export default function (props: {vacancy_id?: number}){
             setAlert(message, "danger");
         }
 
-        setTimeout(() => {setWaiting(false);}, 100);
+        setWaiting(false);
 
     };
 
@@ -105,12 +107,7 @@ export default function (props: {vacancy_id?: number}){
 
         try{
 
-            let response = await Request("post", "/Vacancy/update_vacancy", {
-                ...Inputs,
-                token: cookies.login_token,
-                employee_id: loggedUser.employee_id,
-                vacancy_id: props.vacancy_id
-            });
+            let response = await VacancyAPI.updateVacancy(cookies.login_token, Inputs, loggedUser.employee_id, props.vacancy_id ?? 0);
             setAlert("Vacancy Posted Successfully", "success");
             navigate("/admin/vacancies");
 

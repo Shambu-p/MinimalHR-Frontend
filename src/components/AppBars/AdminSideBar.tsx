@@ -5,8 +5,7 @@ import AlertContext from "../../Contexts/AlertContext";
 
 export default function () {
 
-    const {setAlert, setWaiting} = useContext(AlertContext);
-    const {isLoggedIn, loggedUser, setLoggedUser, setLoggedIn, setCookie, cookies, removeCookie} = useContext(AuthContext);
+    const {loggedUser, setLoggedUser, setLoggedIn, removeCookie} = useContext(AuthContext);
 
     const navigate = useNavigate();
     const [expand, setExpand] = useState<boolean>(true);
@@ -24,12 +23,7 @@ export default function () {
     };
 
     const sidebarSetting = () => {
-        // if(expand){
-        //     setExpand(false);
-        // }else{
-        // }
         setExpand(expand ? false : true);
-
     };
 
     return !loggedUser ? (<></>) : (

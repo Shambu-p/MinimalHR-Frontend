@@ -8,6 +8,7 @@ import AddressModel from "../Models/AddressModel";
 import MyButton from "./Extra/MyButton";
 import DepartmentModel from "../Models/DepartmentModel";
 import {useNavigate} from "react-router-dom";
+import UserAPI from "../API.Interaction/UserAPI";
 
 export default function (props: {id: number, type: ("application"|"profile")}) {
 
@@ -27,10 +28,7 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
 
         let loadUser = async () => {
 
-            let response = await Request("post", "Employees/employee_detail", {
-                token: loggedUser.token,
-                employee_id: props.id
-            });
+            let response = await UserAPI.employeeDetail(loggedUser.token, props.id);
 
             setAccount(response.account);
             setAddresses(response.address);
@@ -42,7 +40,7 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
 
         let loadApplication = async () => {
 
-            let response = await Request("get", "/Employees/check_application/" + props.id);
+            let response = await UserAPI.checkApplication(props.id);
 
             setAddresses(response.address);
             setDepartment(response.department);
@@ -81,11 +79,8 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
 
             setTimeout(() => {setWaiting(true)}, 1);
 
-            let response = await Request("post", "/Address/add_address", {
-                ...data,
-                employee_id: props.id,
-                token: cookies.login_token
-            });
+            let response = await UserAPI.addAddress(cookies.login_token, data, props.id);
+
             setAddresses([...addresses, response]);
             setAlert("address has been added successfully!", "success");
             setWaiting(false);
@@ -102,11 +97,7 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
         try{
 
             setTimeout(() => {setWaiting(true)}, 1);
-            await Request("post", "/Address/delete_address", {
-                token: cookies.login_token,
-                id: address_id,
-                employee_id: loggedUser.employee_id
-            });
+            await UserAPI.deleteAddress(cookies.login_token, address_id, loggedUser.employee_id);
 
             let f_address = addresses.filter(address => {
                 return address.id != address_id;
@@ -128,12 +119,7 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
         try{
 
             setTimeout(() => {setWaiting(true)}, 1);
-            await Request("post", "/Address/edit_address", {
-                ...data,
-                token: cookies.login_token,
-                employee_id: loggedUser.employee_id,
-                id: id
-            });
+            await UserAPI.updateAddress(cookies.login_token, data, loggedUser.employee_id, id)
 
             setAlert("address Changed!", "success");
             setWaiting(false);
@@ -150,11 +136,7 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
         try{
 
             setTimeout(() => {setWaiting(true)}, 1);
-            await Request("post", "/Employees/change_application_status", {
-                token: cookies.login_token,
-                application_id: employee.id,
-                status: state
-            });
+            await UserAPI.updateApplicationStatus(cookies.login_token, employee.id, state);
 
             setAlert("Status Changed!", "main");
             setWaiting(false);
@@ -171,11 +153,7 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
         try{
 
             setTimeout(() => {setWaiting(true)}, 1);
-            await Request("post", "/Account/change_status", {
-                token: cookies.login_token,
-                employee_id: employee.id,
-                status: state
-            });
+            await UserAPI.updateAccountStatus(cookies.login_token, employee.id, state);
 
             setAlert("Status Changed!", "main");
             setWaiting(false);
@@ -197,11 +175,7 @@ export default function (props: {id: number, type: ("application"|"profile")}) {
         setTimeout(() => {setWaiting(true);}, 1);
         try{
 
-            await Request("post", "Employees/change_profile_picture", {
-                token: loggedUser.token,
-                profile_picture: image
-            });
-
+            await UserAPI.updateProfilePicture(loggedUser.token, image);
             setAlert("image changed successfully", "success");
 
         } catch({message}){

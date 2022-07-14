@@ -6,13 +6,15 @@ import {Request} from "../API.Interaction/api";
 import AuthContext from "../Contexts/AuthContext";
 import AlertContext from "../Contexts/AlertContext";
 import {useNavigate, useParams} from "react-router-dom";
+import UserAPI from "../API.Interaction/UserAPI";
+import DepartmentAPI from "../API.Interaction/DepartmentAPI";
 
 interface InputType { name: string, department_head: number }
 
 export default function () {
 
-    const {setAlert, setWaiting} = useContext(AlertContext);
-    const {isLoggedIn, loggedUser, removeCookie, authWaiting} = useContext(AuthContext);
+    const {setAlert} = useContext(AlertContext);
+    const {loggedUser} = useContext(AuthContext);
 
     const params = useParams();
     const navigate = useNavigate();
@@ -26,7 +28,7 @@ export default function () {
 
         let loadUsers = async () => {
             try{
-                let response = await Request("post", "/Employees/employee_list", {token: loggedUser.token});
+                let response = await UserAPI.getAll(loggedUser.token);
                 setUsers(response);
             } catch({message}){
                 setAlert(message, "danger");
@@ -35,7 +37,7 @@ export default function () {
 
         let loadDepartment = async () => {
             try{
-                setInputs(await Request("get", "/Department/department_detail/"+params.department_id));
+                setInputs(await DepartmentAPI.departmentDetail(parseInt(params.department_id ?? "0")));
             } catch({message}) {
                 setAlert(message, "danger");
             }
@@ -63,12 +65,7 @@ export default function () {
 
         try{
 
-            let response = await Request("post", "/Department/update", {
-                token: loggedUser.token,
-                department_name: Inputs.name,
-                department_head: Inputs.department_head,
-                department_id: params.department_id
-            });
+            let response = await DepartmentAPI.updateDepartment(loggedUser.token, parseInt(params.department_id ?? "0"), Inputs.name, Inputs.department_head);
 
             navigate("/admin/department_view/"+params.department_id);
 
@@ -86,16 +83,7 @@ export default function () {
 
         try{
 
-            let request: any = {
-                token: loggedUser.token,
-                name: Inputs.name
-            };
-
-            if(Inputs.department_head){
-                request["department_head"] = Inputs.department_head;
-            }
-
-            let response = await Request("post", "/Department/create", request);
+            let response = await DepartmentAPI.createDepartment(loggedUser.token, Inputs.name, Inputs.department_head);
             navigate("/admin/department_list");
             setAlert("Department Created Successfully!", "success");
 

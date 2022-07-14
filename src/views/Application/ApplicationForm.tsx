@@ -6,6 +6,8 @@ import {Request} from "../../API.Interaction/api";
 import {useNavigate, useParams} from "react-router-dom";
 import VacanciesModel from "../../Models/VacanciesModel";
 import AlertContext from "../../Contexts/AlertContext";
+import VacancyAPI from "../../API.Interaction/VacancyAPI";
+import UserAPI from "../../API.Interaction/UserAPI";
 
 export default function () {
 
@@ -21,8 +23,9 @@ export default function () {
         let loadVacancy = async () => {
 
             try{
-                let response = await Request("get", "/Vacancy/vacancy_detail/" + params.vacancy_id);
-                setVacancy(response);
+                let response = await VacancyAPI.vacancyDetail(parseInt(params.vacancy_id ?? "0"));
+                // let response = await Request("get", "/Vacancy/vacancy_detail/" + params.vacancy_id);
+                setVacancy(response.detail);
             }catch({message}){
                 setAlert(message, "danger");
             }
@@ -41,25 +44,22 @@ export default function () {
             form.detail.salary = vacancy?.salary;
             form.detail.position = vacancy?.position;
             form.detail.department_id = vacancy?.department_id;
-            form.detail.vacancy_id = vacancy?.id;
 
-            let response = await Request("post", "/Employees/apply_for_vacancy", {
-                ...form.detail,
-                address: JSON.stringify(form.address)
-            });
+            if(vacancy && vacancy.id){
+                let response = await UserAPI.applyForVacancy(form.detail, JSON.stringify(form.address), vacancy.id);
 
-            setSubmitted(response.employee);
+                setSubmitted(response.employee);
+                setAlert("account created successfully", "success");
+            }else{
+                setAlert("unknown vacancy", "danger");
+            }
+
             setWaiting(false);
-            setAlert("account created successfully", "success");
 
         } catch({message}) {
             setAlert(message, "danger");
             setWaiting(false);
         }
-
-    };
-
-    const viewApplication = () => {
 
     };
 

@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import AlertContext from "../../Contexts/AlertContext";
 import DepartmentModel from "../../Models/DepartmentModel";
-import {Request} from "../../API.Interaction/api";
 import MyInput from "../../components/Extra/MyInput";
 import SelectInput from "../../components/Extra/SelectInput";
 import VacancyCard from "../../components/VacancyCard";
@@ -9,6 +8,8 @@ import MyButton from "../../components/Extra/MyButton";
 import {useNavigate} from "react-router-dom";
 import AuthContext from "../../Contexts/AuthContext";
 import MainAppbar from "../../components/AppBars/Main";
+import DepartmentAPI from "../../API.Interaction/DepartmentAPI";
+import VacancyAPI from "../../API.Interaction/VacancyAPI";
 
 export default function (){
 
@@ -17,14 +18,10 @@ export default function (){
 
     const navigate = useNavigate();
     const [Inputs, setInputs] = useState<{
-        position: string,
-        status: "open"|"closed",
-        department: {key: any, value: any}|null
-    }>({
-        position: "",
-        status: "open",
-        department: null
-    });
+        position?: string,
+        status?: "open"|"closed",
+        department?: {key: any, value: any}
+    }>({});
     const [departments, setDepartments] = useState<DepartmentModel[]>([]);
     const [vacancies, setVacancies] = useState<any[]>([]);
 
@@ -32,28 +29,15 @@ export default function (){
 
         let loadDepartment = async () => {
             try{
-                setDepartments(await Request("get", "/Department/all"));
+                setDepartments(await DepartmentAPI.getAll());
             }catch({message}){
                 setAlert(message, "danger");
             }
         };
 
         let loadVacancies = async () => {
-            let req_fields: {
-                position?: string,
-                status?: ("open"|"closed"),
-                department_id?: number
-            } = {
-                position: Inputs.position,
-                status: Inputs.status
-            };
-
-            if(Inputs.department != null){
-                req_fields["department_id"] = Inputs.department.key;
-            }
-
             try{
-                setVacancies(await Request("post", "/Vacancy/all", req_fields));
+                setVacancies(await VacancyAPI.getAll(Inputs.position, Inputs.status, Inputs.department?.key));
             } catch({message}) {
                 setAlert(message, "danger");
             }

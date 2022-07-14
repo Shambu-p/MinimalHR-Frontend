@@ -4,6 +4,7 @@ import MyButton from "../../components/Extra/MyButton";
 import {Request} from "../../API.Interaction/api";
 import AlertContext from "../../Contexts/AlertContext";
 import AuthContext from "../../Contexts/AuthContext";
+import UserAPI from "../../API.Interaction/UserAPI";
 
 interface InputType {
     old_password: string,
@@ -29,14 +30,11 @@ export default function (){
     };
 
     const formSubmit = async (event: any) => {
+
         event.preventDefault();
         try{
 
-            let response = await Request("post", "/Employees/change_password", {
-                token: loggedUser.token,
-                ...Inputs
-            });
-
+            let response = await UserAPI.change_password(loggedUser.token, Inputs.old_password, Inputs.new_password, Inputs.confirm_password);
             setAlert("Password Changed Successfully", "success");
 
         }catch({message}){

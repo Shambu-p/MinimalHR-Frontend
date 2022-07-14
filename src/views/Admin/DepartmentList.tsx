@@ -6,11 +6,11 @@ import AuthContext from "../../Contexts/AuthContext";
 import {useNavigate} from "react-router-dom";
 import MyButton from "../../components/Extra/MyButton";
 import TableDisplay from "../../components/Extra/TableDisplay";
+import DepartmentAPI from "../../API.Interaction/DepartmentAPI";
 
 export default function () {
 
     const {setAlert, setWaiting} = useContext(AlertContext);
-    // const {isLoggedIn, loggedUser, setLoggedUser, setLoggedIn, setCookie, cookies} = useContext(AuthContext);
 
     const navigate = useNavigate();
     const [departments, setDepartment] = useState<DepartmentModel[]>([]);
@@ -20,7 +20,7 @@ export default function () {
         let loadDepartments = async () => {
             
             try{
-                setDepartment(await Request("get", "/Department/all"));
+                setDepartment(await DepartmentAPI.getAll());
             } catch({message}){
                 setAlert(message, "danger");
             }

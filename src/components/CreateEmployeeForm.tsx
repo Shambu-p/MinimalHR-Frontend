@@ -6,8 +6,8 @@ import AddressCard from "./AddressCard";
 import MyButton from "./Extra/MyButton";
 import React, {useEffect, useState} from "react";
 import AddressModel from "../Models/AddressModel";
-import {Request} from "../API.Interaction/api";
 import DepartmentModel from "../Models/DepartmentModel";
+import DepartmentAPI from "../API.Interaction/DepartmentAPI";
 
 export default function ({department_input, createOnSubmit}: {
     department_input: boolean,
@@ -41,7 +41,7 @@ export default function ({department_input, createOnSubmit}: {
     useEffect(() => {
 
         let loadDepartment = async () => {
-            setDepartments(await Request("get", "/Department/all"));
+            setDepartments(await DepartmentAPI.getAll());
         };
 
         if(department_input) {

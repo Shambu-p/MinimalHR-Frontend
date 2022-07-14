@@ -3,6 +3,7 @@ import DepartmentModel from "../../Models/DepartmentModel";
 import {Request} from "../../API.Interaction/api";
 import AlertContext from "../../Contexts/AlertContext";
 import {useNavigate, useParams} from "react-router-dom";
+import DepartmentAPI from "../../API.Interaction/DepartmentAPI";
 
 export default function (){
 
@@ -17,7 +18,7 @@ export default function (){
         let loadDepartments = async () => {
 
             try{
-                setDepartment(await Request("get", "/Department/department_detail/"+params.department_id));
+                setDepartment(await DepartmentAPI.departmentDetail(parseInt(params.department_id ?? "0")));
             } catch({message}){
                 setAlert(message, "danger");
             }

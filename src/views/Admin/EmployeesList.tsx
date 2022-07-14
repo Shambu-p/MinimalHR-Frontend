@@ -5,20 +5,22 @@ import TableDisplay from "../../components/Extra/TableDisplay";
 import {Request} from "../../API.Interaction/api";
 import AlertContext from "../../Contexts/AlertContext";
 import AuthContext from "../../Contexts/AuthContext";
+import UserAPI from "../../API.Interaction/UserAPI";
+import EmployeeModel from "../../Models/EmployeeModel";
 
 export default function () {
 
-    const {setAlert, setWaiting} = useContext(AlertContext);
-    const {isLoggedIn, loggedUser, setLoggedUser, setLoggedIn, setCookie, cookies} = useContext(AuthContext);
+    const {setWaiting} = useContext(AlertContext);
+    const {loggedUser} = useContext(AuthContext);
 
     const navigate = useNavigate();
-    const [employeeList, setEmployeeList] = useState<any[]>([]);
+    const [employeeList, setEmployeeList] = useState<EmployeeModel[]>([]);
 
     useEffect(() => {
 
         const load = async () => {
             setTimeout(() => {setWaiting(true)}, 1);
-            let response = await Request("post", "/Employees/employee_list", {token: loggedUser.token});
+            let response = await UserAPI.getAll(loggedUser.token);
             setEmployeeList(response);
             setWaiting(false);
         };
@@ -46,10 +48,6 @@ export default function () {
 
         return emp;
     });
-    //     [
-    //     ["Mark", "otto", "@mdo", (<i className="bi bi-trash-fill" />)],
-    //     ["Shambu", "nazu", "@eth", (<i className="bi bi-trash-fill" />)]
-    // ];
 
     const column = ["Phone Number", "Full Name", "Email", "Salary", "Education Level", "Position"];
 
@@ -65,36 +63,3 @@ export default function () {
         </div>
     );
 }
-
-/*
-<table className="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-                </tbody>
-            </table>
- */

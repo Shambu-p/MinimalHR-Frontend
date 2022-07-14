@@ -5,13 +5,17 @@ import {Request} from "../../API.Interaction/api";
 import {useNavigate, useParams} from "react-router-dom";
 import AuthContext from "../../Contexts/AuthContext";
 import AlertContext from "../../Contexts/AlertContext";
+import DepartmentAPI from "../../API.Interaction/DepartmentAPI";
+import VacancyAPI from "../../API.Interaction/VacancyAPI";
+import UserAPI from "../../API.Interaction/UserAPI";
+import EmployeeModel from "../../Models/EmployeeModel";
 
 export default function (){
 
     const {isLoggedIn, loggedUser, authWaiting} = useContext(AuthContext);
     const {setAlert, setWaiting} = useContext(AlertContext);
 
-    const [applicants, setApplicants] = useState<any[]>([]);
+    const [applicants, setApplicants] = useState<EmployeeModel[]>([]);
 
     const params = useParams();
     const navigate = useNavigate();
@@ -20,14 +24,8 @@ export default function (){
         let loadApplicants = async () => {
             try{
 
-                let resp = await Request("get", "/Vacancy/vacancy_detail/"+params.vacancy_id);
-                console.log(resp);
-                let response = await Request("post", "/Employees/application_list", {
-                    token: loggedUser.token,
-                    salary: resp.detail.salary,
-                    position: resp.detail.position,
-                    department_id: resp.detail.department_id
-                });
+                let resp = await VacancyAPI.vacancyDetail(parseInt(params.vacancy_id ?? "0"));
+                let response = await UserAPI.vacancyApplicant(loggedUser.token, resp.detail.salary, resp.detail.position, resp.detail.department_id);
                 setApplicants(response);
 
             } catch ({message}){
@@ -50,11 +48,9 @@ export default function (){
             applicant.email,
             applicant.education_level,
             applicant.status,
-            (
-                <button className="icon_button rounded" type="button" onClick={() => {navigate("/admin/view_application/"+applicant.application_number)}}>
-                    <i className="bi bi-eye-fill text-primary" /> View
-                </button>
-            )
+            (<button className="icon_button rounded" type="button" onClick={() => {navigate("/admin/view_application/"+applicant.application_number)}}>
+                <i className="bi bi-eye-fill text-primary" /> View
+            </button>)
         ];
     });
 

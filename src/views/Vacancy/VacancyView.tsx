@@ -7,6 +7,7 @@ import AuthContext from "../../Contexts/AuthContext";
 import VacanciesModel from "../../Models/VacanciesModel";
 import DepartmentModel from "../../Models/DepartmentModel";
 import MainAppbar from "../../components/AppBars/Main";
+import VacancyAPI from "../../API.Interaction/VacancyAPI";
 
 export default function () {
 
@@ -24,7 +25,7 @@ export default function () {
         let loadVacancy = async () => {
             try{
                 setTimeout(() => {setWaiting(true)}, 1);
-                let response = await Request("get", "/Vacancy/vacancy_detail/"+params.vacancy_id);
+                let response = await VacancyAPI.vacancyDetail(parseInt(params.vacancy_id ?? "0"));
                 setUpdater(response.updated_by);
                 setDepartment(response.department);
                 setVacancy(response.detail);
@@ -42,19 +43,19 @@ export default function () {
         
         try{
 
-            let response = await Request("post", "/Vacancy/update_vacancy", {
-                ...vacancy,
-                token: loggedUser.token,
-                employee_id: loggedUser.employee_id,
-                vacancy_id: vacancy?.id,
-                status: state
-            });
+            if(vacancy){
 
-            setAlert("Status Changed successfully!", "main");
+                let response = await VacancyAPI.updateVacancy(loggedUser.token, vacancy, loggedUser.employee_id, vacancy.id ?? 0, state);
+                setAlert("Status Changed successfully!", "main");
+
+            }else{
+                setAlert("fill all the required fields first!", "danger");
+            }
 
         } catch({message}){
             setAlert(message, "danger");
         }
+
     };
     
     return !authWaiting && vacancy ? (

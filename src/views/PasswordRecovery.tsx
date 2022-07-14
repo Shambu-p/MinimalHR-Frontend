@@ -4,6 +4,7 @@ import AlertContext from "../Contexts/AlertContext";
 import {Request} from "../API.Interaction/api";
 import RecoveryForms from "../components/RecoveryForms";
 import {useNavigate} from "react-router-dom";
+import UserAPI from "../API.Interaction/UserAPI";
 
 export default function () {
 
@@ -19,9 +20,7 @@ export default function () {
 
         try {
 
-            let response: any = await Request("post", "/Account/forgot_password", {
-                email: input_value
-            });
+            let response: any = await UserAPI.findAccount(input_value);
 
             setUser(response);
             setCurrentForm("verify");
@@ -40,10 +39,7 @@ export default function () {
 
         try{
 
-            let response: any = await Request("post", "/Account/verify_user", {
-                employee_id: user.employee_id,
-                verification_code: input_value
-            });
+            let response: any = await UserAPI.verifyUser(user.employee_id, input_value);
 
             response.verification_code = input_value;
             setUser(response);
@@ -63,12 +59,7 @@ export default function () {
 
         try{
 
-            let response: any = await Request("post", "/Account/verify_user", {
-                employee_id: user.employee_id,
-                verification_code: user.verification_code,
-                new_password: new_password,
-                confirm_password: confirm_password
-            });
+            let response: any = UserAPI.recoverPassword(user.employee_id, user.verification_code, new_password, confirm_password);
 
             setAlert("account verified!", "success");
             navigate("/login");
