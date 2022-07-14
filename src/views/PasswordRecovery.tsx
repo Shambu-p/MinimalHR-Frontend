@@ -1,7 +1,6 @@
 import React, {useContext, useState} from "react";
 import MainAppbar from "../components/AppBars/Main";
 import AlertContext from "../Contexts/AlertContext";
-import {Request} from "../API.Interaction/api";
 import RecoveryForms from "../components/RecoveryForms";
 import {useNavigate} from "react-router-dom";
 import UserAPI from "../API.Interaction/UserAPI";

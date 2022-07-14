@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from "react";
 import MyInput from "./Extra/MyInput";
 import SelectInput from "./Extra/SelectInput";
 import MyButton from "./Extra/MyButton";
-import {Request} from "../API.Interaction/api";
 import AuthContext from "../Contexts/AuthContext";
 import AlertContext from "../Contexts/AlertContext";
 import {useNavigate, useParams} from "react-router-dom";

@@ -3,7 +3,6 @@ import ImageInput from "../components/Extra/ImageInput";
 import AddressCard from "../components/AddressCard";
 import AlertContext from "../Contexts/AlertContext";
 import AuthContext from "../Contexts/AuthContext";
-import {Request} from "../API.Interaction/api";
 import AddressModel from "../Models/AddressModel";
 import MyButton from "./Extra/MyButton";
 import DepartmentModel from "../Models/DepartmentModel";

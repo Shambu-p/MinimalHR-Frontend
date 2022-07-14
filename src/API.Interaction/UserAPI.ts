@@ -4,7 +4,6 @@ import Account from "../Models/Account";
 import AddressModel from "../Models/AddressModel";
 import EventDate from "../Models/EventDate";
 import DepartmentModel from "../Models/DepartmentModel";
-import VacanciesModel from "../Models/VacanciesModel";
 
 
 export default class UserAPI {
